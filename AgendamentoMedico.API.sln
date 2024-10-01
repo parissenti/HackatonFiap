@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.API", "AgendamentoMedico.API\AgendamentoMedico.API.csproj", "{79150B0B-D115-42A1-98BC-816209B2A772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.Application", "AgendamentoMedico.Application\AgendamentoMedico.Application.csproj", "{1A728C08-A47A-4F56-A871-D3B67B2E9D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.Domain", "AgendamentoMedico.Domain\AgendamentoMedico.Domain.csproj", "{35370C5B-F6CA-4969-86EC-E2D908523BF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.Infra.Data", "AgendamentoMedico.Infra.Data\AgendamentoMedico.Infra.Data.csproj", "{E1709B33-B129-42F6-B01E-9C39AAA91ABC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.Infra.IoC", "AgendamentoMedico.Infra.IoC\AgendamentoMedico.Infra.IoC.csproj", "{A47F4C7F-C03A-40A1-AA85-96083B19277E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendamentoMedico.Tests", "AgendamentoMedico.Tests\AgendamentoMedico.Tests.csproj", "{03CB0689-1D38-4124-A93A-99F449D6B096}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79150B0B-D115-42A1-98BC-816209B2A772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79150B0B-D115-42A1-98BC-816209B2A772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79150B0B-D115-42A1-98BC-816209B2A772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79150B0B-D115-42A1-98BC-816209B2A772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A728C08-A47A-4F56-A871-D3B67B2E9D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A728C08-A47A-4F56-A871-D3B67B2E9D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A728C08-A47A-4F56-A871-D3B67B2E9D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A728C08-A47A-4F56-A871-D3B67B2E9D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35370C5B-F6CA-4969-86EC-E2D908523BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35370C5B-F6CA-4969-86EC-E2D908523BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35370C5B-F6CA-4969-86EC-E2D908523BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35370C5B-F6CA-4969-86EC-E2D908523BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1709B33-B129-42F6-B01E-9C39AAA91ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1709B33-B129-42F6-B01E-9C39AAA91ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1709B33-B129-42F6-B01E-9C39AAA91ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1709B33-B129-42F6-B01E-9C39AAA91ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A47F4C7F-C03A-40A1-AA85-96083B19277E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47F4C7F-C03A-40A1-AA85-96083B19277E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47F4C7F-C03A-40A1-AA85-96083B19277E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47F4C7F-C03A-40A1-AA85-96083B19277E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03CB0689-1D38-4124-A93A-99F449D6B096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03CB0689-1D38-4124-A93A-99F449D6B096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03CB0689-1D38-4124-A93A-99F449D6B096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03CB0689-1D38-4124-A93A-99F449D6B096}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFF82C30-A85C-42F8-B247-CE4CBE8FF236}
+	EndGlobalSection
+EndGlobal
