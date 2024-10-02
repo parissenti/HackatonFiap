@@ -51,7 +51,7 @@ namespace AgendamentoMedico.API.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("liberar-agenda")]
-        public async Task<IActionResult> LiberarAgenda([FromBody] LIberarAgenda liberarAgenda)
+        public async Task<IActionResult> LiberarAgenda([FromBody] LiberarAgenda liberarAgenda)
         {
             try
             {

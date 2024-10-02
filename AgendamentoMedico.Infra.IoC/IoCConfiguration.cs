@@ -15,14 +15,14 @@ namespace AgendamentoMedico.Infra.IoC
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IJwtToken, JwtToken>();
             services.AddScoped<IMedicoRepository, MedicoRepository>();
+            services.AddScoped<IPacienteRepository, PacienteRepository>();
         }
 
         public static void ConfigureService(IServiceCollection services)
         {
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IMedicoService, MedicoService>();
-            //services.AddScoped<IPortifolioService, PortifolioService>();
-            //services.AddScoped<ITransacaoService, TransacaoService>();
+            services.AddScoped<IPacienteService, PacienteService>();            
         }
 
         public static void ConfigureAutoMapper(IServiceCollection services)
