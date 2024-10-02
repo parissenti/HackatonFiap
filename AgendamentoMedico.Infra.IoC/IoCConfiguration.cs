@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AgendamentoMedico.Application.Interfaces;
+using AgendamentoMedico.Application.Services;
+using AgendamentoMedico.Infra.Data.Context;
+using AgendamentoMedico.Infra.Data.Interfaces;
+using AgendamentoMedico.Infra.Data.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgendamentoMedico.Infra.IoC
 {
@@ -6,15 +11,16 @@ namespace AgendamentoMedico.Infra.IoC
     {
         public static void ConfigureRepository(IServiceCollection services)
         {
-            //services.AddScoped<IMongoContext, MongoContext>();
-            //services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            //services.AddScoped<IJwtToken, JwtToken>();
+            services.AddScoped<IMongoContext, MongoContext>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IJwtToken, JwtToken>();
+            services.AddScoped<IMedicoRepository, MedicoRepository>();
         }
 
         public static void ConfigureService(IServiceCollection services)
         {
-            //services.AddScoped<IUsuarioService, UsuarioService>();
-            //services.AddScoped<IAtivoService, AtivoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IMedicoService, MedicoService>();
             //services.AddScoped<IPortifolioService, PortifolioService>();
             //services.AddScoped<ITransacaoService, TransacaoService>();
         }

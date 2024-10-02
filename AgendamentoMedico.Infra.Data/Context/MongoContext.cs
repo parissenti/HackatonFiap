@@ -1,4 +1,5 @@
-﻿using AgendamentoMedico.Infra.Data.Configuration;
+﻿using AgendamentoMedico.Domain.Entitites;
+using AgendamentoMedico.Infra.Data.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -14,11 +15,9 @@ namespace AgendamentoMedico.Infra.Data.Context
             var client = new MongoClient(config.Value.ConnectionString);
             _db = client.GetDatabase(config.Value.Database);
 
-            //CriaCollectionSeNaoExistir<Usuario>("Usuarios").Wait();
-            //CriaCollectionSeNaoExistir<Ativo>("Ativos").Wait();
-            //CriaCollectionSeNaoExistir<Portifolio>("Portifolios").Wait();
-            //CriaCollectionSeNaoExistir<Transacao>("Transacoes").Wait();
-
+            CriaCollectionSeNaoExistir<Usuario>("Usuarios").Wait();
+            CriaCollectionSeNaoExistir<PeriodoAtendimento>("PeriodoAtendimentos").Wait();
+            CriaCollectionSeNaoExistir<ConsultaAgendamento>("ConsultaAgendamentos").Wait();
         }
 
         private async Task CriaCollectionSeNaoExistir<T>(string nomeCollection)
@@ -33,7 +32,8 @@ namespace AgendamentoMedico.Infra.Data.Context
             });
         }
 
-        //public IMongoCollection<Usuario> Usuarios => _db.GetCollection<Usuario>("Usuarios");
-
+        public IMongoCollection<Usuario> Usuarios => _db.GetCollection<Usuario>("Usuarios");
+        public IMongoCollection<PeriodoAtendimento> PeriodoAtendimentos => _db.GetCollection<PeriodoAtendimento>("PeriodoAtendimentos");
+        public IMongoCollection<ConsultaAgendamento> ConsultaAgendamentos => _db.GetCollection<ConsultaAgendamento>("ConsultaAgendamentos");
     }
 }
