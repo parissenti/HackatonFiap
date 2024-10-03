@@ -24,7 +24,17 @@ namespace AgendamentoMedico.API.Controllers
         {
             try
             {
-                var usuario = await _usuarioService.AutenticarUsuario(autenticarUsuario.Email, autenticarUsuario.Senha);
+                if (autenticarUsuario == null)
+                    throw new ArgumentNullException(nameof(autenticarUsuario));
+
+                if (string.IsNullOrWhiteSpace(autenticarUsuario.Email))
+                    throw new ArgumentException("E-mail é obrigatório.", nameof(autenticarUsuario.Email));
+
+                if (string.IsNullOrWhiteSpace(autenticarUsuario.Senha))
+                    throw new ArgumentException("Senha é obrigatório.", nameof(autenticarUsuario.Senha));
+
+                var dadosLogin = new UsuarioLogin { Email = autenticarUsuario.Email, Senha = autenticarUsuario.Senha };
+                var usuario = await _usuarioService.AutenticarUsuario(dadosLogin);
                 return Ok(usuario);
             }
             catch (Exception ex)

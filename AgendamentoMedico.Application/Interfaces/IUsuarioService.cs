@@ -5,7 +5,7 @@ namespace AgendamentoMedico.Application.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<string> AutenticarUsuario(string email, string senha);
+        Task<string> AutenticarUsuario(UsuarioLogin usuarioLogin);
         Task CadastrarUsuario(Usuario usuario);
         Task<Usuario> BuscarUsuario(Guid id);
         Task<IEnumerable<Usuario>> ListarUsuario();

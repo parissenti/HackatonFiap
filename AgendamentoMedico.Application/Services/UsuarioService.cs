@@ -15,9 +15,20 @@ namespace AgendamentoMedico.Application.Services
             _jwtToken = jwtToken;
         }
 
-        public async Task<string> AutenticarUsuario(string email, string senha)
+        public async Task<string> AutenticarUsuario(UsuarioLogin usuarioLogin)
         {
-            var usuario = await _usuarioRepository.AutenticarUsuario(email, senha);
+            if (usuarioLogin == null)
+                throw new ArgumentNullException(nameof(usuarioLogin));
+
+            if (string.IsNullOrWhiteSpace(usuarioLogin.Email))
+                throw new ArgumentException("E-mail é obrigatório.", nameof(usuarioLogin.Email));
+
+            if (string.IsNullOrWhiteSpace(usuarioLogin.Senha))
+                throw new ArgumentException("Senha é obrigatório.", nameof(usuarioLogin.Senha));
+
+            var login = new UsuarioLogin { Email = usuarioLogin.Email, Senha = usuarioLogin.Senha };
+
+            var usuario = await _usuarioRepository.AutenticarUsuario(login);
 
             if (usuario == null)
                 throw new Exception("Falha ao autenticar usuário.");
