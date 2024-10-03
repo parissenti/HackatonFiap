@@ -46,7 +46,7 @@ namespace AgendamentoMedico.Application.Services
         {
             var consulta = await _medicoRepository.BuscarConsultaPorDataeHorarioConsulta(dataConsulta, idMedico);
 
-            if (consulta == null)
+            if (consulta == null || !consulta.Any())
                 throw new Exception("Data/Horário não disponível para agendamento");
 
             var medico = await _usuarioRepository.BuscarUsuarioPorId(idMedico);

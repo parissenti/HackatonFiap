@@ -16,23 +16,25 @@ namespace AgendamentoMedico.Infra.Data.Repositories
 
         public async Task MarcarConsulta(Guid idConsultaAgendamento, Guid idPaciente)
         {
-            using (var session = await _context.StartSessionAsync())
-            {
-                session.StartTransaction();
+            var filter = Builders<ConsultaAgendamento>.Filter.Eq(e => e.Id, idConsultaAgendamento);
 
-                try
-                {
-                    var filter = Builders<ConsultaAgendamento>.Filter.Eq(e => e.Id, idConsultaAgendamento);
-                    var update = Builders<ConsultaAgendamento>.Update.Set(e => e.idPaciente, idPaciente)
-                                                                     .Set(e => e.Disponivel, false);
-                    await _context.ConsultaAgendamentos.UpdateOneAsync(filter, update);
-                    await session.CommitTransactionAsync();
-                }
-                catch
-                {
-                    await session.AbortTransactionAsync();
-                    throw;
-                }
+            var updateLock = Builders<ConsultaAgendamento>.Update.Set(e => e.IsLocked, true);
+            var result = await _context.ConsultaAgendamentos.UpdateOneAsync(filter, updateLock);
+
+            if (result.ModifiedCount == 0)
+            {
+                throw new InvalidOperationException("Consulta já está sendo processada.");
+            }
+
+            try
+            {
+                var update = Builders<ConsultaAgendamento>.Update.Set(e => e.idPaciente, idPaciente)
+                                                                 .Set(e => e.Disponivel, false);
+                await _context.ConsultaAgendamentos.UpdateOneAsync(filter, update);
+            }
+            finally
+            {
+                await _context.ConsultaAgendamentos.UpdateOneAsync(filter, Builders<ConsultaAgendamento>.Update.Set(e => e.IsLocked, false));
             }
 
         }
