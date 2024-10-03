@@ -79,13 +79,14 @@ namespace AgendamentoMedico.API
                 //c.IncludeXmlComments(xmlPath);
             });
 
-
             services.Configure<MongoConfiguration>(
               Configuration.GetSection("MongoSettings"));
 
             services.Configure<AppSettings>(
                 Configuration.GetSection("AppSettings"));
 
+            services.Configure<EnvioEmail>(
+             Configuration.GetSection("EnvioEmail"));
 
             IoCConfiguration.ConfigureRepository(services);
             IoCConfiguration.ConfigureService(services);

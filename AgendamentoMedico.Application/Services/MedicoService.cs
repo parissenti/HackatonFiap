@@ -6,7 +6,7 @@ namespace AgendamentoMedico.Application.Services
 {
     public class MedicoService : IMedicoService
     {
-        private readonly IMedicoRepository _medicoRepository;        
+        private readonly IMedicoRepository _medicoRepository;
 
         public MedicoService(IMedicoRepository medicoRepository)
         {
@@ -37,5 +37,11 @@ namespace AgendamentoMedico.Application.Services
         {
             return await _medicoRepository.ListarMedicos();
         }
+
+        public async Task<IEnumerable<ConsultaAgendamento>> BuscarConsultaPorDataeHorarioConsulta(DateTime dataConsulta, Guid idMedico)
+        {
+            return await _medicoRepository.BuscarConsultaPorDataeHorarioConsulta(dataConsulta, idMedico);
+        }
+
     }
 }

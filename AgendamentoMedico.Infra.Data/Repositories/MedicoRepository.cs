@@ -45,7 +45,7 @@ namespace AgendamentoMedico.Infra.Data.Repositories
                     consultaAgendamento.idMedico = idMedico;
                     await _context.ConsultaAgendamentos.InsertOneAsync(consultaAgendamento);
                 }
-            }            
+            }
         }
 
         private List<ConsultaAgendamento> GerarAgenda(DateTime inicio, DateTime fim, TimeSpan intervalo)
@@ -56,14 +56,16 @@ namespace AgendamentoMedico.Infra.Data.Repositories
             {
                 ConsultaAgendamento consulta = new ConsultaAgendamento();
                 consulta.DataConsulta = hora;
+                consulta.Disponivel = true;
+
                 Random random = new Random();
-               // consulta.Disponivel = random.Next(0, 2).Equals(1);
+                // consulta.Disponivel = random.Next(0, 2).Equals(1);
                 horarios.Add(consulta);
             }
 
             return horarios;
         }
-        
+
         public async Task<IEnumerable<ConsultaAgendamento>> ListarAgenda(Guid idMedico)
         {
             try
@@ -104,6 +106,18 @@ namespace AgendamentoMedico.Infra.Data.Repositories
             try
             {
                 return await _context.Usuarios.Find(e => true && e.Tipo.Equals("M")).ToListAsync();
+            }
+            catch (MongoException ex)
+            {
+                throw new MongoException(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<ConsultaAgendamento>> BuscarConsultaPorDataeHorarioConsulta(DateTime dataConsulta, Guid idMedico)
+        {
+            try
+            {
+                return await _context.ConsultaAgendamentos.Find(e => true && e.DataConsulta.Equals(dataConsulta) && e.idMedico.Equals(idMedico) && e.Disponivel.Equals(true)).ToListAsync();
             }
             catch (MongoException ex)
             {

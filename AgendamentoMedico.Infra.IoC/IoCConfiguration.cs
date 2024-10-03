@@ -22,7 +22,7 @@ namespace AgendamentoMedico.Infra.IoC
         {
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IMedicoService, MedicoService>();
-            services.AddScoped<IPacienteService, PacienteService>();            
+            services.AddScoped<IPacienteService, PacienteService>();
         }
 
         public static void ConfigureAutoMapper(IServiceCollection services)

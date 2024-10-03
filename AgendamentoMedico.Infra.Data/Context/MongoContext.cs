@@ -9,11 +9,12 @@ namespace AgendamentoMedico.Infra.Data.Context
     public class MongoContext : IMongoContext
     {
         private readonly IMongoDatabase _db;
+        private readonly MongoClient _client;
 
         public MongoContext(IOptions<MongoConfiguration> config)
         {
-            var client = new MongoClient(config.Value.ConnectionString);
-            _db = client.GetDatabase(config.Value.Database);
+            _client = new MongoClient(config.Value.ConnectionString);
+            _db = _client.GetDatabase(config.Value.Database);
 
             CriaCollectionSeNaoExistir<Usuario>("Usuarios").Wait();
             CriaCollectionSeNaoExistir<PeriodoAtendimento>("PeriodoAtendimentos").Wait();
@@ -30,6 +31,11 @@ namespace AgendamentoMedico.Infra.Data.Context
                 if (!collections.Any())
                     _db.CreateCollection(nomeCollection);
             });
+        }
+
+        public async Task<IClientSessionHandle> StartSessionAsync()
+        {
+            return await _client.StartSessionAsync();
         }
 
         public IMongoCollection<Usuario> Usuarios => _db.GetCollection<Usuario>("Usuarios");

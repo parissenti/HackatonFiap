@@ -1,6 +1,5 @@
 ﻿using AgendamentoMedico.Application.DTOS.Medico.Request;
 using AgendamentoMedico.Application.Interfaces;
-using AgendamentoMedico.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +23,7 @@ namespace AgendamentoMedico.API.Controllers
         {
             try
             {
-                await _pacienteService.MarcarConsulta(marcarConsulta.idAgendamentoMedico, marcarConsulta.idPaciente);
+                await _pacienteService.MarcarConsulta(marcarConsulta.DataConsulta, marcarConsulta.idMedico, marcarConsulta.idPaciente);
                 return Ok();
             }
             catch (Exception ex)

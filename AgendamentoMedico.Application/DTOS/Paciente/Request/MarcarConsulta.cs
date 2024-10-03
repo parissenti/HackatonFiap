@@ -2,7 +2,8 @@
 {
     public class MarcarConsulta
     {
-        public Guid idAgendamentoMedico { get; set; }
+        public DateTime DataConsulta { get; set; }
+        public Guid idMedico { get; set; }
         public Guid idPaciente { get; set; }
     }
 }
