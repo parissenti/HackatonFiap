@@ -42,6 +42,19 @@ namespace AgendamentoMedico.API
                 };
             });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    policy =>
+                    {
+                    policy
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .SetIsOriginAllowed(origin => true)
+                        .WithOrigins("http://localhost", "http://127.0.0.1")
+                        .AllowCredentials();
+                    });
+            });
 
             services.AddAuthorization();
             services.AddSwaggerGen(c =>
@@ -107,6 +120,7 @@ namespace AgendamentoMedico.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
