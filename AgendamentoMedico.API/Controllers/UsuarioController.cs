@@ -24,8 +24,8 @@ namespace AgendamentoMedico.API.Controllers
         {
             try
             {
-                var usuario = await _usuarioService.AutenticarUsuario(autenticarUsuario.Email, autenticarUsuario.Senha);
-                return Ok(usuario);
+                var token = await _usuarioService.AutenticarUsuario(autenticarUsuario.Email, autenticarUsuario.Senha);
+                return Ok(new { Token = token });
             }
             catch (Exception ex)
             {

@@ -24,7 +24,9 @@ namespace AgendamentoMedico.Infra.Data.Repositories
             List<Claim> claims = new()
             {
                 new Claim("Nome", usuario.Nome.ToString()),
-                new Claim(ClaimTypes.Role, "ADMIN")
+                new Claim(ClaimTypes.Role, "ADMIN"),
+                new Claim("Tipo", usuario.Tipo.ToString()),
+                new Claim("Email", usuario.Email.ToString()),
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
