@@ -19,14 +19,21 @@ namespace AgendamentoMedico.Infra.Data.Context
             CriaCollectionSeNaoExistir<PeriodoAtendimento>("PeriodoAtendimentos").Wait();
             CriaCollectionSeNaoExistir<ConsultaAgendamento>("ConsultaAgendamentos").Wait();
         }
-
         private async Task CriaCollectionSeNaoExistir<T>(string nomeCollection)
         {
+            Console.WriteLine($"Verificando se a coleção '{nomeCollection}' existe...");
             var filter = new BsonDocument("name", nomeCollection);
             var collections = await _db.ListCollectionsAsync(new ListCollectionsOptions { Filter = filter });
+
             if (!await collections.AnyAsync())
             {
+                Console.WriteLine($"Coleção '{nomeCollection}' não encontrada. Criando agora...");
                 await _db.CreateCollectionAsync(nomeCollection);
+                Console.WriteLine($"Coleção '{nomeCollection}' criada com sucesso.");
+            }
+            else
+            {
+                Console.WriteLine($"Coleção '{nomeCollection}' já existe. Nenhuma ação necessária.");
             }
         }
 
