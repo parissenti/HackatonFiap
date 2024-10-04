@@ -45,6 +45,8 @@ namespace AgendamentoMedico.Tests.IntegrationTests
             };
             await CriarUsuarioAsync(usuarioDTO);
 
+            Console.WriteLine(usuarioDTO);
+
             var loginDto = new UsuarioLogin
             {
                 Email = usuarioDTO.Email,
