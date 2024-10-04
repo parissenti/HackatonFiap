@@ -22,14 +22,12 @@ namespace AgendamentoMedico.Infra.Data.Context
 
         private async Task CriaCollectionSeNaoExistir<T>(string nomeCollection)
         {
-            await Task.Run(() =>
+            var filter = new BsonDocument("name", nomeCollection);
+            var collections = await _db.ListCollectionsAsync(new ListCollectionsOptions { Filter = filter });
+            if (!await collections.AnyAsync())
             {
-                var filter = new BsonDocument("name", nomeCollection);
-                var collections = _db.ListCollections(new ListCollectionsOptions { Filter = filter });
-
-                if (!collections.Any())
-                    _db.CreateCollection(nomeCollection);
-            });
+                await _db.CreateCollectionAsync(nomeCollection);
+            }
         }
 
         public IMongoCollection<Usuario> Usuarios => _db.GetCollection<Usuario>("Usuarios");
