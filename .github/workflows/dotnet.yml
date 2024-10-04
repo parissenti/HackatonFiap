@@ -1,0 +1,45 @@
+name: .NET Core
+
+on:
+  push:
+    branches: 
+      - master
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+     mongo:
+      image: mongo:4.4
+      ports:
+       - 27017:27017
+      # options: > 
+      #  --health-cmd "mongo --eval 'db.adminCommand('ping')'" 
+      #  --health-interval 10s 
+      #  --health-timeout 5s 
+      #  --health-retries 5
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build solution
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Run tests
+      env:
+       ASPNETCORE_ENVIRONMENT: "Development"
+       MongoSettings__Host: "localhost"  
+       MongoSettings__Port: 27017        
+       MongoSettings__Database: "db_hackaton_agendamentomedico"  
+      run: dotnet test --configuration Release --no-build --logger:"console;verbosity=detailed"
