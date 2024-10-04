@@ -95,5 +95,18 @@ namespace AgendamentoMedico.Infra.Data.Repositories
                 throw new MongoException(ex.Message);
             }
         }
+
+        public async Task<bool> DeletarUsuarioPorId(Guid id)
+        {
+            try
+            {
+                var resultado = await _context.Usuarios.DeleteOneAsync(u => u.Id == id);
+                return resultado.DeletedCount > 0;
+            }
+            catch (MongoException ex)
+            {
+                throw new MongoException(ex.Message);
+            }
+        }
     }
 }

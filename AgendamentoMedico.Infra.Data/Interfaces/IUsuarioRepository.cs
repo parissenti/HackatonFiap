@@ -10,5 +10,6 @@ namespace AgendamentoMedico.Infra.Data.Interfaces
         Task<Usuario> BuscarUsuarioPorId(Guid id);
         Task DesabilitarUsuario(int idUsuario);
         Task<IEnumerable<Usuario>> ListarUsuarios();
+        Task <bool>DeletarUsuarioPorId(Guid id);
     }
 }

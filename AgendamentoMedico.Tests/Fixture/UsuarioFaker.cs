@@ -36,6 +36,16 @@ namespace AgendamentoMedico.Tests.Fixture
                 Email = "carlos.oliveira@email.com",
                 Senha = "SenhaForte789!"
             },
+            new Usuario() {
+                Id = Guid.Parse("b1b2c3f5-e5f6-7890-abcd-ef1234567891"),
+                Nome = "Maria Luiza",
+                Cpf = "234.567.890-01",
+                Crm = null,
+                TempoDeConsulta = 0,
+                Tipo = "P",
+                Email = "maria.luiza@email.com",
+                Senha = "SenhaForte456!"
+            },
         };
     }
 }

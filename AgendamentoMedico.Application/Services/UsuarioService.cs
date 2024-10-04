@@ -60,5 +60,10 @@ namespace AgendamentoMedico.Application.Services
         {
             return await _usuarioRepository.ListarUsuarios();
         }
+
+        public async Task <bool>DeletarUsuarioPorId(Guid id)
+        {
+            return await _usuarioRepository.DeletarUsuarioPorId(id);
+        }
     }
 }

@@ -112,5 +112,22 @@ namespace AgendamentoMedico.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeletarUsuario(Guid id)
+        {
+            try
+            {
+                bool resultado = await _usuarioService.DeletarUsuarioPorId(id);
+                if (resultado)
+                    return NoContent(); // Deleção bem-sucedida
+                return NotFound("Usuário não encontrado.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

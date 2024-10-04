@@ -9,5 +9,6 @@ namespace AgendamentoMedico.Application.Interfaces
         Task CadastrarUsuario(Usuario usuario);
         Task<Usuario> BuscarUsuario(Guid id);
         Task<IEnumerable<Usuario>> ListarUsuario();
+        Task <bool>DeletarUsuarioPorId(Guid id);
     } 
 }
