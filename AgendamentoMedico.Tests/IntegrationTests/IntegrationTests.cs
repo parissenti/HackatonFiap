@@ -1,19 +1,196 @@
 ﻿using AgendamentoMedico.API;
 using AgendamentoMedico.Application.DTOs.Usuario.Request;
+using AgendamentoMedico.Application.DTOS.Medico.Request;
 using AgendamentoMedico.Domain.Entitites;
+using AgendamentoMedico.Domain.Enums;
 using AgendamentoMedico.Tests.Fixture;
 using EmprestimoLivros.Tests.IntegrationTests;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
 
-
 namespace AgendamentoMedico.Tests.IntegrationTests
 {
-    public class UsuarioControllerTests : IntegrationTestBase
+    public class IntegrationTests : IntegrationTestBase
     {
-        public UsuarioControllerTests(WebApplicationFactory<Startup> factory) : base(factory)
+        public IntegrationTests(WebApplicationFactory<Startup> factory) : base(factory)
         {
         }
+
+        [Fact]
+        public async Task CadastrarHorariosDisponiveis_Valido_Retorna_Ok()
+        {
+            var periodoAtendimento = new PeriodoAtendimento
+            {
+                IdMedico = Guid.NewGuid(),
+                DiaDaSemana = DiasDaSemana.Segunda,
+                Inicio = DateTime.Now,
+                Fim = DateTime.Now.AddHours(8)
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("/Medico/cadastrar-periodo-atendimento", periodoAtendimento);
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task ListarPeriodoAtendimentos_UsuarioAutenticado_Retorna_Ok()
+        {
+            var usuario = UsuarioFaker.UsuarioFake[3];
+            var usuarioDTO = new UsuarioPacienteRequest
+            {
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                Senha = usuario.Senha,
+                Cpf = usuario.Cpf,
+            };
+            await CriarUsuarioAsync(usuarioDTO);
+
+            Console.WriteLine(usuarioDTO);
+
+            var loginDto = new UsuarioLogin
+            {
+                Email = usuarioDTO.Email,
+                Senha = usuarioDTO.Senha
+            };
+
+            var responseAuth = await _httpClient.PostAsJsonAsync("/Usuario/autenticar", loginDto);
+            responseAuth.EnsureSuccessStatusCode();
+            var token = await responseAuth.Content.ReadAsStringAsync();
+            DefinirAutenticacaoHeader(token);
+
+            var periodoAtendimento = new PeriodoAtendimento
+            {
+                IdMedico = Guid.NewGuid(),
+                DiaDaSemana = DiasDaSemana.Segunda,
+                Inicio = DateTime.Now,
+                Fim = DateTime.Now.AddHours(8)
+            };
+            await _httpClient.PostAsJsonAsync("/Medico/cadastrar-periodo-atendimento", periodoAtendimento);
+
+            var response = await _httpClient.GetAsync($"/Medico/listar-periodo-atendimento/{periodoAtendimento.IdMedico}");
+            response.EnsureSuccessStatusCode();
+            await DeletarAdminAsync(token, usuarioDTO.Email);
+        }
+
+        [Fact]
+        public async Task ListarPeriodoAtendimentos_UsuarioNaoAutenticado_Retorna_Unauthorized()
+        {
+            var medicoId = Guid.NewGuid();
+
+            var response = await _httpClient.GetAsync($"/Medico/listar-periodo-atendimento/{medicoId}");
+            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task LiberarAgenda_Valido_Retorna_Ok()
+        {
+            var liberarAgenda = new LiberarAgenda
+            {
+                idMedico = Guid.NewGuid(),
+                dataLiberar = DateTime.Now
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("/Medico/liberar-agenda", liberarAgenda);
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task ListarAgenda_UsuarioAutenticado_Retorna_Ok()
+        {
+            var usuario = UsuarioFaker.UsuarioFake[3];
+            var usuarioDTO = new UsuarioPacienteRequest
+            {
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                Senha = usuario.Senha,
+                Cpf = usuario.Cpf,
+            };
+            await CriarUsuarioAsync(usuarioDTO);
+
+            var loginDto = new UsuarioLogin
+            {
+                Email = usuarioDTO.Email,
+                Senha = usuarioDTO.Senha
+            };
+
+            var responseAuth = await _httpClient.PostAsJsonAsync("/Usuario/autenticar", loginDto);
+            responseAuth.EnsureSuccessStatusCode();
+            var token = await responseAuth.Content.ReadAsStringAsync();
+            DefinirAutenticacaoHeader(token);
+
+            var response = await _httpClient.GetAsync($"/Medico/listar-agenda/{usuario.Id}");
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task ListarAgenda_UsuarioNaoAutenticado_Retorna_Unauthorized()
+        {
+            var medicoId = Guid.NewGuid();
+
+            var response = await _httpClient.GetAsync($"/Medico/listar-agenda/{medicoId}");
+            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task MarcarConsulta_Valido_Retorna_Ok()
+        {
+            var marcarConsulta = new MarcarConsulta
+            {
+                idAgendamentoMedico = Guid.NewGuid(),
+                idPaciente = Guid.NewGuid()
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("/Paciente/marcar-consulta", marcarConsulta);
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task ListarConsultasAgendadas_UsuarioAutenticado_Retorna_Ok()
+        {
+            var usuario = UsuarioFaker.UsuarioFake[3];
+            var usuarioDTO = new UsuarioPacienteRequest
+            {
+                Nome = usuario.Nome,
+                Email = usuario.Email,
+                Senha = usuario.Senha,
+                Cpf = usuario.Cpf
+            };
+            await CriarUsuarioAsync(usuarioDTO);
+
+            var loginDto = new UsuarioLogin
+            {
+                Email = usuarioDTO.Email,
+                Senha = usuarioDTO.Senha
+            };
+
+            var responseAuth = await _httpClient.PostAsJsonAsync("/Usuario/autenticar", loginDto);
+            responseAuth.EnsureSuccessStatusCode();
+            var token = await responseAuth.Content.ReadAsStringAsync();
+
+            DefinirAutenticacaoHeader(token);
+
+            var pacienteId = usuario.Id;
+            var marcarConsulta = new MarcarConsulta
+            {
+                idAgendamentoMedico = Guid.NewGuid(),
+                idPaciente = pacienteId
+            };
+            var responseMarcarConsulta = await _httpClient.PostAsJsonAsync("/Paciente/marcar-consulta", marcarConsulta);
+            responseMarcarConsulta.EnsureSuccessStatusCode();
+
+            var response = await _httpClient.GetAsync($"/Paciente/listar-consultas-agendadas/{pacienteId}");
+            await DeletarAdminAsync(token, usuarioDTO.Email);
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task ListarConsultasAgendadas_UsuarioNaoAutenticado_Retorna_Unauthorized()
+        {
+            var pacienteId = Guid.NewGuid();
+
+            var response = await _httpClient.GetAsync($"/Paciente/listar-consultas-agendadas/{pacienteId}");
+            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
 
         [Fact]
         public async Task AutenticarUsuario_Valido_Retorna_Ok()
@@ -195,7 +372,7 @@ namespace AgendamentoMedico.Tests.IntegrationTests
             var response = await _httpClient.PostAsJsonAsync("/Usuario/cadastrar-paciente", usuarioDTO);
 
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, response.StatusCode);
-            
+
             var loginDto = new UsuarioLogin
             {
                 Email = usuario.Email,
