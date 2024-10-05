@@ -14,18 +14,20 @@ namespace AgendamentoMedico.Infra.Data.Repositories
             _context = context;
         }
 
-        public async Task<Usuario> AutenticarUsuario(string email, string senha)
+        public async Task<Usuario> AutenticarUsuario(UsuarioLogin usuarioLogin)
         {
             try
             {
-                var usuario = await _context.Usuarios.Find(u => u.Email == email).FirstOrDefaultAsync();
+                var usuario = await _context.Usuarios.Find(
+                    u => u.Email == usuarioLogin.Email
+                ).FirstOrDefaultAsync();
 
                 if (usuario == null)
                 {
                     throw new Exception("Usuário ou senha inválidos.");
                 }
 
-                bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.Senha);
+                bool senhaValida = BCrypt.Net.BCrypt.Verify(usuarioLogin.Senha, usuario.Senha);
 
                 if (!senhaValida)
                 {
@@ -87,6 +89,19 @@ namespace AgendamentoMedico.Infra.Data.Repositories
             try
             {
                 return await _context.Usuarios.Find(e => true).ToListAsync();
+            }
+            catch (MongoException ex)
+            {
+                throw new MongoException(ex.Message);
+            }
+        }
+
+        public async Task<bool> DeletarUsuarioPorId(Guid id)
+        {
+            try
+            {
+                var resultado = await _context.Usuarios.DeleteOneAsync(u => u.Id == id);
+                return resultado.DeletedCount > 0;
             }
             catch (MongoException ex)
             {

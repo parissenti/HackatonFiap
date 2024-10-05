@@ -61,7 +61,7 @@ namespace AgendamentoMedico.Application.Services
 
             await _pacienteRepository.MarcarConsulta(consulta.First().Id, idPaciente);
 
-            await EnviarEmail(medico, paciente, consulta.First());
+            //await EnviarEmail(medico, paciente, consulta.First());
 
         }
 

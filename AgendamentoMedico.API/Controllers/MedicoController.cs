@@ -17,7 +17,7 @@ namespace AgendamentoMedico.API.Controllers
             _medicoService = medicoService;
         }
 
-        [HttpPost]
+        [HttpPost] 
         [AllowAnonymous]
         [Route("cadastrar-periodo-atendimento")]
         public async Task<IActionResult> CadastrarHorariosDisponiveis([FromBody] PeriodoAtendimento periodoAtendimento)

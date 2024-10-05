@@ -24,8 +24,19 @@ namespace AgendamentoMedico.API.Controllers
         {
             try
             {
-                var token = await _usuarioService.AutenticarUsuario(autenticarUsuario.Email, autenticarUsuario.Senha);
+                if (autenticarUsuario == null)
+                    throw new ArgumentNullException(nameof(autenticarUsuario));
+
+                if (string.IsNullOrWhiteSpace(autenticarUsuario.Email))
+                    throw new ArgumentException("E-mail é obrigatório.", nameof(autenticarUsuario.Email));
+
+                if (string.IsNullOrWhiteSpace(autenticarUsuario.Senha))
+                    throw new ArgumentException("Senha é obrigatório.", nameof(autenticarUsuario.Senha));
+
+                var dadosLogin = new UsuarioLogin { Email = autenticarUsuario.Email, Senha = autenticarUsuario.Senha };
+                var token = await _usuarioService.AutenticarUsuario(dadosLogin);
                 return Ok(new { Token = token });
+
             }
             catch (Exception ex)
             {
@@ -96,6 +107,23 @@ namespace AgendamentoMedico.API.Controllers
             {
                 var usuarios = await _usuarioService.ListarUsuario();
                 return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeletarUsuario(Guid id)
+        {
+            try
+            {
+                bool resultado = await _usuarioService.DeletarUsuarioPorId(id);
+                if (resultado)
+                    return NoContent(); // Deleção bem-sucedida
+                return NotFound("Usuário não encontrado.");
             }
             catch (Exception ex)
             {

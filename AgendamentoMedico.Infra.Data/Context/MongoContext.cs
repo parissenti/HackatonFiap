@@ -20,17 +20,22 @@ namespace AgendamentoMedico.Infra.Data.Context
             CriaCollectionSeNaoExistir<PeriodoAtendimento>("PeriodoAtendimentos").Wait();
             CriaCollectionSeNaoExistir<ConsultaAgendamento>("ConsultaAgendamentos").Wait();
         }
-
         private async Task CriaCollectionSeNaoExistir<T>(string nomeCollection)
         {
-            await Task.Run(() =>
-            {
-                var filter = new BsonDocument("name", nomeCollection);
-                var collections = _db.ListCollections(new ListCollectionsOptions { Filter = filter });
+            Console.WriteLine($"Verificando se a coleção '{nomeCollection}' existe...");
+            var filter = new BsonDocument("name", nomeCollection);
+            var collections = await _db.ListCollectionsAsync(new ListCollectionsOptions { Filter = filter });
 
-                if (!collections.Any())
-                    _db.CreateCollection(nomeCollection);
-            });
+            if (!await collections.AnyAsync())
+            {
+                Console.WriteLine($"Coleção '{nomeCollection}' não encontrada. Criando agora...");
+                await _db.CreateCollectionAsync(nomeCollection);
+                Console.WriteLine($"Coleção '{nomeCollection}' criada com sucesso.");
+            }
+            else
+            {
+                Console.WriteLine($"Coleção '{nomeCollection}' já existe. Nenhuma ação necessária.");
+            }
         }
 
         public async Task<IClientSessionHandle> StartSessionAsync()
