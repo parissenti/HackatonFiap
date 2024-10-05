@@ -86,112 +86,86 @@ O projeto será dividido nas seguintes camadas:
 
 ## Endpoints
 
-### Autenticação
-**Endpoint para autenticação de usuários**  
-**POST:** `/Usuario/autenticar`  
+### Cadastra período de atendimento
+**Endpoint para cadastra período de atendimento do médico**  
+**POST:** `/Medico/cadastrar-periodo-atendimento`  
 **Requisição:**
 ```json
-{ 
-  "email": "usuario@exemplo.com", 
-  "senha": "senha123"  
+{
+  "idMedico": "string",
+  "diaDaSemana": int,
+  "inicio": "string",
+  "fim": "string"
 }
 ```
 **Resposta:**
+Status: 200
+
+### Listar período de atendimento
+**Endpoint para lista todos os períodos de atendimento do médicos**  
+**GET:** `/Medico/listar-periodo-atendimento/{id}`  
+**Resposta:**
 ```json
-{ 
-  "token": "JWT_TOKEN"   
-}
+[
+  {
+    "idMedico": "string",
+    "diaDaSemana": int,
+    "inicio": "string",
+    "fim": "string",
+    "id": "string"
+  }
+]
 ```
 
-### Cadastrar
-**Endpoint para cadastrar um novo usuário**  
-**POST:** `/Usuario/cadastrar-paciente`  
+### Liberar agenda
+**Endpoint para cadastrar as agendas disponíveis do médico**  
+**POST:** `/Medico/liberar-agenda`  
 **Requisição:**
 ```json
-{  
-  "nome": "João da Silva",  
-  "email": "joao@exemplo.com",  
-  "cpf": 123456789, 
-  "senha": "senha123", 
-  "tipoCadastro": "P"
-}  
+{
+  "idMedico": "string",
+  "dataLiberar": "string"
+}
 ```
 **Resposta:**
+Status: 200
+
+### Listar agenda
+**Endpoint para listar as agendas do médico**  
+**GET:** `/Medico/listar-agenda/{id}`  
+**Resposta:**
 ```json
-{  
-  "id": "1",  
-  "nome": "João da Silva",  
-  "email": "joao@exemplo.com",  
-  "cpf": 123456789, 
-  "senha": "senha123", 
-  "tipoCadastro": "P" 
-}
+[
+  {
+    "idMedico": "string",
+    "idPaciente": "string",
+    "dataConsulta": "string",
+    "disponivel": bool,
+    "isLocked": bool,
+    "id": "string"
+  }
+]
 ```
 
 ### Listar
 **Endpoint para listar todos os médicos**  
-**GET:** `/Usuario/listar/medico`  
+**GET:** `/Medico/listar`  
 **Resposta:**
 ```json
 [  
-  {  
-    "id": "1",  
-    "nome": "João da Silva",  
-    "email": "joao@exemplo.com",  
-    "cpf": 123456789, 
-    "senha": "senha123", 
-    "crm": "123455678", 
-    "tipoCadastro": "M" 
-  } 
+  {
+    "nome": "string",
+    "cpf": "string",
+    "crm": "string",
+    "tempoDeConsulta": int,
+    "tipo": "string",
+    "email": "string",
+    "senha": "string",
+    "periodoAtendimento": [],
+    "agendaDiaria": [],
+    "id": "string"
+  }
 ]
-```
-
-### Listar Horários
-**Endpoint para listar todos os horários disponíveis dos médicos**  
-**GET:** `/Usuario/listar/disponibilidade/medico/{medicoId}` 
-**Resposta:**
-```json
-[  
-  { 
-    "data": "20/10/2024", 
-    "horarios": [ 
-      { 
-        "dataConsulta": "20/10/2024 15:00", 
-        "disponivel": true 
-      }, 
-      { 
-        "dataConsulta": "20/10/2024 14:30", 
-        "disponivel": false 
-      } 
-    ] 
-  } 
-]
-```
-### Cadastrar Médico
-**Endpoint para cadastrar um novo médico**  
-**POST:** `/Usuario/cadastrar-medico`  
-**Requisição:**
-```json
-{  
-  "nome": "João da Silva",  
-  "email": "joao@exemplo.com",  
-  "cpf": "123456789", 
-  "senha": "senha123", 
-  "crm": "123455678", 
-  "tipoCadastro": "M" 
-}
-```
-**Resposta:**
-```json
-{  
-  "id": "1",  
-  "nome": "João da Silva",  
-  "email": "joao@exemplo.com",  
-  "cpf": 123456789, 
-  "senha": "senha123", 
-  "crm": "123455678", 
-  "tipoCadastro": "M" 
-}
 ```
 
 ### Marcar Consulta
@@ -206,13 +180,7 @@ O projeto será dividido nas seguintes camadas:
 }
 ```
 **Resposta:**
-```json
-{  
-  "dataConsulta": "string",
-  "idMedico": "string",
-  "idPaciente": "string"
-}
-```
+Status: 200
 
 ### Consultar agenda
 **Endpoint consultar agenda**  
@@ -233,6 +201,56 @@ O projeto será dividido nas seguintes camadas:
   } 
 ]
 ```
+
+### Autenticação
+**Endpoint para autenticação de usuários**  
+**POST:** `/Usuario/autenticar`  
+**Requisição:**
+```json
+{ 
+  "email": "usuario@exemplo.com", 
+  "senha": "senha123"  
+}
+```
+**Resposta:**
+```json
+{ 
+  "token": "JWT_TOKEN"   
+}
+```
+
+### Cadastrar Médico
+**Endpoint para cadastrar um novo médico**  
+**POST:** `/Usuario/cadastrar-medico`  
+**Requisição:**
+```json
+{  
+  "nome": "João da Silva",  
+  "email": "joao@exemplo.com",  
+  "cpf": "123456789", 
+  "senha": "senha123", 
+  "crm": "123455678", 
+  "tipoCadastro": "M" 
+}
+```
+**Resposta:**
+Status: 200
+
+### Cadastrar Paciente
+**Endpoint para cadastrar um novo usuário**  
+**POST:** `/Usuario/cadastrar-paciente`  
+**Requisição:**
+```json
+{  
+  "nome": "string",  
+  "email": "string",  
+  "cpf": int, 
+  "senha": "string", 
+  "tipoCadastro": "string"
+}  
+```
+**Resposta:**
+Status: 200
 
 ## Casos de Uso
 

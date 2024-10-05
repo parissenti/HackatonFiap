@@ -57,11 +57,11 @@ namespace AgendamentoMedico.Application.Services
             var paciente = await _usuarioRepository.BuscarUsuarioPorId(idPaciente);
 
             if (paciente == null)
-                throw new Exception("Não foi possível localizar o médico informado !");
+                throw new Exception("Não foi possível localizar o paciente informado !");
 
             await _pacienteRepository.MarcarConsulta(consulta.First().Id, idPaciente);
 
-            //await EnviarEmail(medico, paciente, consulta.First());
+            await EnviarEmail(medico, paciente, consulta.First());
 
         }
 
